@@ -16,4 +16,6 @@ mov = read.csv("Data/movies.csv")
 
 
 
-ggplot(mov, aes(x=Year, y=Lang)) + geom_point()
+g <- ggplot(mov, aes(x=Year, y=Lang)) + geom_point()
+
+print(g)
