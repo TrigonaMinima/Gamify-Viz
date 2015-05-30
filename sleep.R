@@ -28,6 +28,15 @@ g <- ggplot(times, aes(x=Date, y=total_t)) +
   xlab("") + ylab("Hours")
 print(g)
 
+
+# last_plot() + geom_smooth(aes(group = factor(month), colour = (a > 0)), method = lm, se = F)
+
+
+
+g <- g + geom_smooth(method = lm, se = F, colour = "green")
+print(g)
+
+
 # Histogram.
 g <- ggplot(times, aes(total_t)) +
   geom_histogram(binwidth = 0.2)
@@ -73,6 +82,25 @@ print(g)
 g <- ggplot(times) + geom_point(aes(total_t, day), shape = 1)
 print(g)
 
+# Point with jitter
+g <- ggplot(times, aes(factor(day), total_t)) +
+  geom_point(position = position_jitter(width = 0.05), alpha = 0.6, shape = 1) +
+  theme_bw() +
+  xlab("Magnitude (Richter)") +
+  ylab("Depth (km)")
+print(g)
+
+# Box Plot
+g <- ggplot(times, aes(factor(day), total_t)) +
+  geom_boxplot() + coord_flip() + ylab("Average time spent sleeping")
+print(g)
+
+# Ribbon Plot
+g <- ggplot(times, aes(total_t, day)) +
+  geom_ribbon(aes(ymax = ..density.., ymin = -..density..), stat = "density") +
+  facet_grid(day ~ ., as.table = F, scales = "free_y") +
+  labs(x = "Time spent sleeping", y = "Days")
+print(g)
 
 
 
@@ -102,6 +130,8 @@ print(g)
 # TODO(in ggplot2)
 # df <- data.frame(dalChange, barCols)
 # names(df) <- c("dalChange", "barCols")
+
+# ggplot(trigram_freqs[1:150,], aes(x = 1:150, y=freq)) + geom_bar(stat = "identity")
 
 
 # g <- ggplot(df, aes(x = dalChange, y = ))
@@ -139,3 +169,6 @@ print(g)
 
 # heatmap of day (sun, mon, tue, wed, thu, fri, sat) vs no of hours per day (0-1, 1-2, 2-3, ..., 14-15).
 
+# daily average change and hline at the average I want
+
+# use plotly
