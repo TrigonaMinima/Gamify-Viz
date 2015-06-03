@@ -39,9 +39,28 @@ print(g)
 
 # last_plot() + geom_smooth(aes(group = factor(month), colour = (a > 0)), method = lm, se = F)
 
-
-g <- g + geom_smooth(method = lm, se = F, colour = "green")
+# Overall Trend
+g <- ggplot(times, aes(x = date, y = total_t)) +
+  geom_line() +
+  geom_smooth(method = lm, se = F, colour = "green")
 print(g)
+
+# Monthly Trend
+g <- ggplot(times, aes(x = date, y = total_t)) +
+  geom_line() +
+  geom_smooth(method = lm, se = F, colour = "green") +
+  geom_smooth(aes(group = factor(my), colour = times$my), method = lm, se = F)
+print(g)
+
+# # Daily Trend
+# Make daily data nad use it
+# g <- ggplot(times, aes(x = date, y = total_t)) +
+#   geom_line() +
+#   geom_smooth(method = lm, se = F, colour = "green") +
+#   geom_smooth(aes(group = factor(my), colour = times$my), method = lm, se = F)
+# print(g)
+
+
 
 # Cumulative time series
 g <- ggplot(times, aes(x = date)) +
@@ -82,7 +101,6 @@ print(g)
 
 # g1 <- g + geom_step(subset = .(variable == "day"))
 # print(g1)
-
 
 
 
@@ -181,6 +199,7 @@ print(g)
 # print(g2)
 
 
+# Panel Chart
 g <- ggplot(times, aes(x = date, y = total_t)) +
   geom_point() +
   geom_line() +
@@ -194,7 +213,6 @@ print(g)
 
 
 
-
 # f <-   function(x) {
     # if (x < 0) {
       # return("#2cbd25")
@@ -202,6 +220,8 @@ print(g)
       # return("gray")
     # }
 # }
+
+# https://learnr.wordpress.com/2009/06/01/ggplot2-positioning-of-barplot-category-labels/
 
 # % change daily
 # baseline: 0
