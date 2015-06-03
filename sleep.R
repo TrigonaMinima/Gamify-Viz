@@ -157,8 +157,16 @@ g <- ggplot(times, aes(total_t)) +
   geom_rug()
 print(g)
 
-# Point
+# Scatter Plot
 g <- ggplot(times) + geom_point(aes(total_t, day), shape = 1)
+print(g)
+
+# Faceted scatterplot plot with all points in the background of each plot.
+g <- ggplot(times, aes(date, total_t)) +
+  geom_point(data = transform(times, day = NULL), colour = "grey92") +
+  geom_point() +
+  facet_grid(~day) +
+  theme_bw()
 print(g)
 
 # Scatter Plot
@@ -170,7 +178,6 @@ g <- ggplot(times, aes(x = date, y = total_t, colour = my)) +
   # theme(panel.grid.minor = element_line(colour = NA)) +
   # theme(panel.grid.major = element_line(colour = NA))
 print(g)
-
 
 # Point with jitter
 g <- ggplot(times, aes(factor(day), total_t)) +
@@ -199,6 +206,16 @@ g <- ggplot(times, aes(date, total_t)) +
   theme_bw()
 print(g)
 
+# Loess Analysis
+g <- ggplot(times, aes(date, total_t)) +
+  geom_point() +
+  geom_smooth(method = "loess", se = F) +
+  geom_rug() +
+  facet_grid(~day) +
+  xlab("Coursework score") +
+  ylab("Written exam score")
+print(g)
+
 
 # A ggplot trick to plot different plot types in facets
 
@@ -220,6 +237,26 @@ g <- ggplot(times, aes(x = date, y = total_t)) +
   facet_wrap(~day, ncol = 2, scales = "free") +
   coord_equal()
 print(g)
+
+# Dont know wtf this is.
+# https://learnr.wordpress.com/2009/08/10/ggplot2-version-of-figures-in-lattice-multivariate-data-visualization-with-r-part-9/
+# g <- ggplot(times, aes(x = day, y = date, fill = total_t)) +
+#   geom_tile() +
+#   theme(axis.text.x = element_text(angle = 90, hjust = 1, colour = "grey50")) +
+#   theme(aspect.ratio = 50 / 5)
+# print(g)
+
+
+# Area under the curve or between 2 lines
+g <- ggplot(times, aes(x = date, y = total_t, ymin = 0, ymax = total_t)) +
+  geom_ribbon(aes(colour = my))
+print(g)
+
+# Area under the curve or between 2 lines
+g <- ggplot(times, aes(x = date, y = total_t, ymin = 0, ymax = total_t)) +
+  geom_ribbon()
+print(g)
+
 
 
 
@@ -287,6 +324,7 @@ print(g)
 # plot of total hours spent sleeping during a day per 24 hrs.
 
 # heatmap of day (sun, mon, tue, wed, thu, fri, sat) vs no of hours per day (0-1, 1-2, 2-3, ..., 14-15).
+# https://learnr.wordpress.com/2010/01/26/ggplot2-quick-heatmap-plotting/
 
 # daily average change and hline at the average I want
 
@@ -299,7 +337,20 @@ print(g)
 
 # Try this for each month - https://learnr.wordpress.com/2009/05/01/ggplot2-dont-try-this-with-excel-revised/
 
+# use this? https://learnr.wordpress.com/2010/08/16/consultants-chart-in-ggplot2/
+
 # Plot inside a plot - https://learnr.wordpress.com/2009/05/08/ggplot2-plot-inside-a-plot/
 
 # Use color combinations from this - https://learnr.wordpress.com/2009/04/15/ggplot2-qualitative-colour-palettes/
 # use plotly
+
+# Change the order of legend labels
+# https://learnr.wordpress.com/2010/03/23/ggplot2-changing-the-default-order-of-legend-labels-and-stacking-of-data/
+
+# Generate a fuckin' pdf
+# pdf("population_growth.pdf", paper = "a4")
+# d_ply(df, .(country), function(x) plot(x$year, x$value, type = "l", main = unique(x$country)))
+# dev.off()
+
+
+# save using ggsave()
