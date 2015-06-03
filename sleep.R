@@ -46,10 +46,13 @@ g <- ggplot(times, aes(x = date, y = total_t)) +
 print(g)
 
 # Monthly Trend
+# Can be made better
+# https://learnr.wordpress.com/2009/07/12/ggplot2-decadal-trend-rates-in-global-temperature/
 g <- ggplot(times, aes(x = date, y = total_t)) +
   geom_line() +
   geom_smooth(method = lm, se = F, colour = "green") +
-  geom_smooth(aes(group = factor(my), colour = times$my), method = lm, se = F)
+  geom_smooth(aes(group = factor(my), colour = times$my), method = lm, se = F) +
+  theme(legend.position = "none")
 print(g)
 
 # # Daily Trend
@@ -60,6 +63,13 @@ print(g)
 #   geom_smooth(aes(group = factor(my), colour = times$my), method = lm, se = F)
 # print(g)
 
+# Monthly Trend
+g <- ggplot(times, aes(x = date, y = total_t)) +
+  geom_line() +
+  geom_smooth(method = lm, se = F, colour = "green") +
+  geom_smooth(aes(group = factor(my), colour = times$my), method = lm, se = F) +
+  facet_wrap(~day, scales = "free")
+print(g)
 
 
 # Cumulative time series
