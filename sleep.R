@@ -1,17 +1,24 @@
 # Various visualizations out of my daily sleep times.
+# following this - https://learnr.wordpress.com/
 
 # Libraries
 library(ggplot2)
 library(scales)
+library(reshape2)
 
 # Load data.
 times <- read.csv("Data/sleep_times.csv", stringsAsFactors=FALSE)
 
 # Date to "date" format.
-times$Date <- as.Date(times$Date, "%d-%m-%Y")
+times$date <- as.Date(times$date, "%d-%m-%Y")
 
 # Adding day corresponding to the date.
-times$day <- substr(x=weekdays(times$Date), start=1, stop=3)
+times$day <- substr(x=weekdays(times$date), start=1, stop=3)
+
+# Adding month-year for a corresponding date
+times$my <- paste(format(times$date, "%b"),
+  substr(times$date, start = 3, stop = 4),
+  sep = "")
 
 # Total time in hours (2:30 hrs -> 2.5 hrs)
 times$total_t <- as.integer(substr(x=times$total, start=1, stop=2)) +
@@ -20,9 +27,10 @@ times$total_t <- as.integer(substr(x=times$total, start=1, stop=2)) +
 # Rounded total time.
 times$total_round <- round(times$total_t)
 
+
 # Time series plot.
 # Baseline: hours
-g <- ggplot(times, aes(x=Date, y=total_t)) +
+g <- ggplot(times, aes(x = date, y = total_t)) +
   geom_line() +
   scale_x_date(breaks = date_breaks("1 week"), labels = date_format("%d %b")) +
   xlab("") + ylab("Hours")
@@ -32,9 +40,26 @@ print(g)
 # last_plot() + geom_smooth(aes(group = factor(month), colour = (a > 0)), method = lm, se = F)
 
 
-
 g <- g + geom_smooth(method = lm, se = F, colour = "green")
 print(g)
+
+# Cumulative time series
+g <- ggplot(times, aes(x = date)) +
+  geom_line(aes(y = cumsum(times$total_t))) +
+  geom_line(aes(y = cumsum(rep(rep(24, length(times$date))))))
+print(g)
+
+# time series with
+g <- ggplot(times, aes(x = date)) +
+  geom_line(aes(y = times$total_t)) +
+  geom_hline(y = 24)
+print(g)
+
+# time series with
+# g <- ggplot(times, aes(x = times$total_t, y = 24)) +
+#   geom_point()
+# print(g)
+
 
 
 # Histogram.
@@ -82,6 +107,17 @@ print(g)
 g <- ggplot(times) + geom_point(aes(total_t, day), shape = 1)
 print(g)
 
+# Scatter Plot
+g <- ggplot(times, aes(x = date, y = total_t, colour = my)) +
+  geom_point(size = 2)
+  # theme(legend.position = "none") +
+  # scale_colour_brewer(palette = "Set1") +
+  # theme(panel.background = element_rect(colour = "grey")) +
+  # theme(panel.grid.minor = element_line(colour = NA)) +
+  # theme(panel.grid.major = element_line(colour = NA))
+print(g)
+
+
 # Point with jitter
 g <- ggplot(times, aes(factor(day), total_t)) +
   geom_point(position = position_jitter(width = 0.05), alpha = 0.6, shape = 1) +
@@ -101,6 +137,19 @@ g <- ggplot(times, aes(total_t, day)) +
   facet_grid(day ~ ., as.table = F, scales = "free_y") +
   labs(x = "Time spent sleeping", y = "Days")
 print(g)
+
+# Loess Analysis
+g <- ggplot(times, aes(date, total_t)) +
+  geom_point() +
+  geom_smooth(method = "loess", size = 1.5) +
+  theme_bw()
+print(g)
+
+
+
+
+
+
 
 
 
@@ -171,4 +220,16 @@ print(g)
 
 # daily average change and hline at the average I want
 
+# stacked bars (and overlapping bars - https://learnr.wordpress.com/2009/04/02/ggplot2-marimekko-replacement-overlapping-bars/)
+# for each month with number of hours (total)
+# and spent sleeping (per day) [use of melt function probably](http://seananderson.ca/2013/10/19/reshape.html)
+# follow this - https://learnr.wordpress.com/2009/03/17/ggplot2-barplots/
+
+# Can this be done here? - https://learnr.wordpress.com/2009/04/09/ggplot2-sales-dashboard/
+
+# Try this for each month - https://learnr.wordpress.com/2009/05/01/ggplot2-dont-try-this-with-excel-revised/
+
+# Plot inside a plot - https://learnr.wordpress.com/2009/05/08/ggplot2-plot-inside-a-plot/
+
+# Use color combinations from this - https://learnr.wordpress.com/2009/04/15/ggplot2-qualitative-colour-palettes/
 # use plotly
