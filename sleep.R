@@ -61,6 +61,32 @@ print(g)
 # print(g)
 
 
+# library(grid)
+# library(plyr)
+
+# https://learnr.wordpress.com/2009/05/18/ggplot2-three-variable-time-series-panel-chart/
+
+# g <- ggplot(times, aes(date,
+#     total_t,
+#     # ymin = 0,
+#     # ymax = total_t,
+#     colour = "grey30")) +
+#   scale_colour_identity() +
+#   # xlim(1980, 2010) +
+#   facet_grid(variable ~ ., scales = "free", as.table = FALSE) +
+#   theme_bw()
+#   # theme_bw() +
+#   # theme(panel.margin = unit(0, "lines"),
+#   #   axis.title.x = element_blank(),
+#   #   axis.title.y = element_blank())
+
+# g1 <- g + geom_step(subset = .(variable == "day"))
+# print(g1)
+
+
+
+
+
 
 # Histogram.
 g <- ggplot(times, aes(total_t)) +
@@ -146,11 +172,25 @@ g <- ggplot(times, aes(date, total_t)) +
 print(g)
 
 
+# A ggplot trick to plot different plot types in facets
+
+# g <- ggplot(times, aes(x = date, y = total_t)) +
+#   facet_grid(variable ~ ., scales = "free")
+# g1 <- g + geom_step(day ~ .))
+# g2 <- g1 + geom_linerange(my ~ .)
+# print(g2)
 
 
-
-
-
+g <- ggplot(times, aes(x = date, y = total_t)) +
+  geom_point() +
+  geom_line() +
+  geom_smooth(method = "lm", se = FALSE, fullrange = T) +
+  facet_wrap(~day, ncol = 2) +
+  labs(x = "Date", y = "Total Time") +
+  theme_bw() +
+  facet_wrap(~day, ncol = 2, scales = "free") +
+  coord_equal()
+print(g)
 
 
 
