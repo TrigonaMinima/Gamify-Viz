@@ -27,7 +27,7 @@ times$total_t <- as.integer(substr(x=times$total, start=1, stop=2)) +
 # Rounded total time.
 times$total_round <- round(times$total_t)
 
-
+# Conversion of time to the "POSIXct" format of R.
 times$ts1 <- strptime(times$ts1, format = "%I:%M %p")
 times$te1 <- strptime(times$te1, format = "%I:%M %p")
 times$ts2 <- strptime(times$ts2, format = "%I:%M %p")
@@ -39,8 +39,11 @@ times$te4 <- strptime(times$te4, format = "%I:%M %p")
 times$ts5 <- strptime(times$ts5, format = "%I:%M %p")
 times$te5 <- strptime(times$te5, format = "%I:%M %p")
 
+# Colour vector for the following graph
+times$colour <- ifelse((seq(1:length(times$date)) %% 2) ==  1, "red", "grey30")
 
 # Each line bar represents the amount of time I slept.
+# g <- ggplot(times, aes(x = as.POSIXct(date), colour = colour)) +   [With colours]
 g <- ggplot(times, aes(x = as.POSIXct(date))) +
   geom_segment(aes(y = ts1,
     x = as.POSIXct(date),
@@ -50,30 +53,34 @@ g <- ggplot(times, aes(x = as.POSIXct(date))) +
   geom_segment(aes(y = ts2,
     x = as.POSIXct(date),
     xend = as.POSIXct(date),
-    yend = te2)) +
+    yend = te2,
+    linetype = "h")) +
   geom_segment(aes(y = ts3,
     x = as.POSIXct(date),
     xend = as.POSIXct(date),
-    yend = te3)) +
+    yend = te3,
+    linetype = "h")) +
   geom_segment(aes(y = ts4,
     x = as.POSIXct(date),
     xend = as.POSIXct(date),
-    yend = te4)) +
+    yend = te4,
+    linetype = "h")) +
   geom_segment(aes(y = ts5,
     x = as.POSIXct(date),
     xend = as.POSIXct(date),
-    yend = te5)) +
+    yend = te5,
+    linetype = "h")) +
+  theme_bw() +
   scale_y_datetime(breaks = ("2 hour"),
-    minor_breaks = ("30 min"),
+    # minor_breaks = ("30 min"),
     labels = date_format("%H:%M")) +
   scale_x_datetime(breaks = date_breaks("1 week"),
     labels = date_format("%d %b '%y")) +
-  xlab("") + ylab("24 Hours") +
+  xlab("") +
+  ylab("") +
   theme(axis.text.x = element_text(angle=45, vjust=0.5),
     legend.position = "none")
 print(g)
-
-
 
 # Time series plot.
 # Baseline: hours
