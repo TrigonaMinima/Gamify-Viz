@@ -22,10 +22,57 @@ times$my <- paste(format(times$date, "%b"),
 
 # Total time in hours (2:30 hrs -> 2.5 hrs)
 times$total_t <- as.integer(substr(x=times$total, start=1, stop=2)) +
-  (as.integer(substr(x=times$total, start=4, stop=5))/60)
+  (as.integer(substr(x=times$total, start=4, stop=5)) / 60)
 
 # Rounded total time.
 times$total_round <- round(times$total_t)
+
+
+times$ts1 <- strptime(times$ts1, format = "%I:%M %p")
+times$te1 <- strptime(times$te1, format = "%I:%M %p")
+times$ts2 <- strptime(times$ts2, format = "%I:%M %p")
+times$te2 <- strptime(times$te2, format = "%I:%M %p")
+times$ts3 <- strptime(times$ts3, format = "%I:%M %p")
+times$te3 <- strptime(times$te3, format = "%I:%M %p")
+times$ts4 <- strptime(times$ts4, format = "%I:%M %p")
+times$te4 <- strptime(times$te4, format = "%I:%M %p")
+times$ts5 <- strptime(times$ts5, format = "%I:%M %p")
+times$te5 <- strptime(times$te5, format = "%I:%M %p")
+
+
+# Each line bar represents the amount of time I slept.
+g <- ggplot(times, aes(x = as.POSIXct(date))) +
+  geom_segment(aes(y = ts1,
+    x = as.POSIXct(date),
+    xend = as.POSIXct(date),
+    yend = te1,
+    linetype = "h")) +
+  geom_segment(aes(y = ts2,
+    x = as.POSIXct(date),
+    xend = as.POSIXct(date),
+    yend = te2)) +
+  geom_segment(aes(y = ts3,
+    x = as.POSIXct(date),
+    xend = as.POSIXct(date),
+    yend = te3)) +
+  geom_segment(aes(y = ts4,
+    x = as.POSIXct(date),
+    xend = as.POSIXct(date),
+    yend = te4)) +
+  geom_segment(aes(y = ts5,
+    x = as.POSIXct(date),
+    xend = as.POSIXct(date),
+    yend = te5)) +
+  scale_y_datetime(breaks = ("2 hour"),
+    minor_breaks = ("30 min"),
+    labels = date_format("%H:%M")) +
+  scale_x_datetime(breaks = date_breaks("1 week"),
+    labels = date_format("%d %b '%y")) +
+  xlab("") + ylab("24 Hours") +
+  theme(axis.text.x = element_text(angle=45, vjust=0.5),
+    legend.position = "none")
+print(g)
+
 
 
 # Time series plot.
@@ -35,8 +82,10 @@ g <- ggplot(times, aes(x = date, y = total_t)) +
   scale_x_date(breaks = date_breaks("1 week"),
     labels = date_format("%d %b '%y")) +
   xlab("") + ylab("Hours spent sleeping") +
+  geom_hline(y = 7.0, position = "identity", stat = "hline") +
   theme(axis.text.x = element_text(angle=45, vjust=0.5))
 print(g)
+
 
 # Overall Trend
 g <- ggplot(times, aes(x = date, y = total_t)) +
@@ -47,6 +96,9 @@ g <- ggplot(times, aes(x = date, y = total_t)) +
   xlab("") + ylab("Hours spent sleeping") +
   theme(axis.text.x = element_text(angle=45, vjust=0.5))
 print(g)
+
+
+
 
 # Monthly Trend
 # Can be made better
