@@ -93,14 +93,14 @@ label <- paste(round(avg,2), "Hours")
 g <- ggplot(times, aes(x = date, y = total_t)) +
   geom_line(colour = "grey70") +
   geom_point(colour = "grey50", size = 0.7) +
-  scale_x_date(breaks = date_breaks("1 week"),
-    labels = date_format("%d %b '%y")) +
-  theme_bw() +
-  xlab("") + ylab("Hours spent sleeping") +
   geom_hline(y = avg,
     position = "identity",
     stat = "hline",
     colour = "grey50") +
+  theme_bw() +
+  scale_x_date(breaks = date_breaks("1 week"),
+    labels = date_format("%d %b '%y")) +
+  xlab("") + ylab("Hours spent sleeping") +
   geom_text(aes(label = "Current Average",
     x = date[1] - 8,
     y = yu,
@@ -118,15 +118,16 @@ print(g)
 
 # Overall Trend
 g <- ggplot(times, aes(x = date, y = total_t)) +
-  geom_line() +
-  geom_smooth(method = lm, se = F, colour = "red") +
+  geom_line(colour = "grey70") +
+  geom_point(colour = "grey50", size = 0.7) +
+  geom_smooth(method = lm, se = F, colour = "grey55") +
+  theme_bw() +
   scale_x_date(breaks = date_breaks("1 week"),
     labels = date_format("%d %b '%y")) +
   xlab("") + ylab("Hours spent sleeping") +
-  theme(axis.text.x = element_text(angle=45, vjust=0.5))
+  theme(axis.text.x = element_text(angle=45, vjust=0.5),
+    legend.position = "none")
 print(g)
-
-
 
 
 # Monthly Trend
