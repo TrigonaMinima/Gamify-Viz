@@ -9,7 +9,7 @@ library(reshape2)
 # Load data.
 times <- read.csv("Data/sleep_times.csv", stringsAsFactors=FALSE)
 
-# Date to "date" format.
+# Date to R's "date" format.
 times$date <- as.Date(times$date, "%d-%m-%Y")
 
 # Adding day corresponding to the date.
@@ -33,7 +33,7 @@ times$total_round <- round(times$total_t)
 g <- ggplot(times, aes(x = date, y = total_t)) +
   geom_line() +
   scale_x_date(breaks = date_breaks("1 week"), labels = date_format("%d %b")) +
-  xlab("") + ylab("Hours")
+  xlab("") + ylab("Hours spent sleeping")
 print(g)
 
 
