@@ -82,15 +82,37 @@ g <- ggplot(times, aes(x = as.POSIXct(date))) +
     legend.position = "none")
 print(g)
 
+avg <- mean(times$total_t)
+yu <- avg + 0.3
+yl <- avg - 0.3
+label <- paste(round(avg,2), "Hours")
+
+
 # Time series plot.
 # Baseline: hours
 g <- ggplot(times, aes(x = date, y = total_t)) +
-  geom_line() +
+  geom_line(colour = "grey70") +
+  geom_point(colour = "grey50", size = 0.7) +
   scale_x_date(breaks = date_breaks("1 week"),
     labels = date_format("%d %b '%y")) +
+  theme_bw() +
   xlab("") + ylab("Hours spent sleeping") +
-  geom_hline(y = 7.0, position = "identity", stat = "hline") +
-  theme(axis.text.x = element_text(angle=45, vjust=0.5))
+  geom_hline(y = avg,
+    position = "identity",
+    stat = "hline",
+    colour = "grey50") +
+  geom_text(aes(label = "Current Average",
+    x = date[1] - 8,
+    y = yu,
+    size = 5),
+    colour = "grey60") +
+  geom_text(aes(label = label,
+    x = date[1] - 8,
+    y = yl,
+    size = 5),
+    colour = "grey60") +
+  theme(axis.text.x = element_text(angle=45, vjust=0.5),
+    legend.position = "none")
 print(g)
 
 
