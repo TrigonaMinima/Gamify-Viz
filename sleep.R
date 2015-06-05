@@ -92,6 +92,7 @@ label <- paste(round(avg,2), "Hours")
 # Baseline: hours
 g <- ggplot(times, aes(x = date, y = total_t)) +
   geom_line(colour = "grey70") +
+  geom_hline(y = 24, color = "grey70") +
   geom_point(colour = "grey50", size = 0.7) +
   geom_hline(y = avg,
     position = "identity",
@@ -109,6 +110,11 @@ g <- ggplot(times, aes(x = date, y = total_t)) +
   geom_text(aes(label = label,
     x = date[1] - 8,
     y = yl,
+    size = 5),
+    colour = "grey60") +
+  geom_text(aes(label = "24 Hours",
+    x = date[1] - 9,
+    y = 24.3,
     size = 5),
     colour = "grey60") +
   theme(axis.text.x = element_text(angle=45, vjust=0.5),
@@ -134,15 +140,22 @@ print(g)
 # Can be made better
 # https://learnr.wordpress.com/2009/07/12/ggplot2-decadal-trend-rates-in-global-temperature/
 g <- ggplot(times, aes(x = date, y = total_t)) +
-  geom_line() +
-  geom_smooth(method = lm, se = F, colour = "red") +
+  geom_line(colour = "grey70") +
+  geom_point(colour = "grey50", size = 0.7) +
+  geom_smooth(method = lm, se = F, colour = "grey55") +
   geom_smooth(aes(group = my, colour = my), method = lm, se = F) +
+  theme_bw() +
+
+  geom_vline() +
+
+
   scale_x_date(breaks = date_breaks("1 week"),
     labels = date_format("%d %b '%y")) +
   xlab("") + ylab("Hours spent sleeping") +
-  theme(legend.position = "none",
-    axis.text.x = element_text(angle=45, vjust=0.5))
+  theme(axis.text.x = element_text(angle=45, vjust=0.5),
+    legend.position = "none")
 print(g)
+
 
 # # Daily Trend
 # Make daily data nad use it
@@ -152,7 +165,7 @@ print(g)
 #   geom_smooth(aes(group = factor(my), colour = times$my), method = lm, se = F)
 # print(g)
 
-# Monthly Trend
+# Monthly Trend by day
 g <- ggplot(times, aes(x = date, y = total_t)) +
   geom_line() +
   geom_smooth(method = lm, se = F, colour = "green") +
@@ -165,12 +178,6 @@ print(g)
 g <- ggplot(times, aes(x = date)) +
   geom_line(aes(y = cumsum(times$total_t))) +
   geom_line(aes(y = cumsum(rep(rep(24, length(times$date))))))
-print(g)
-
-# time series with
-g <- ggplot(times, aes(x = date)) +
-  geom_line(aes(y = times$total_t)) +
-  geom_hline(y = 24)
 print(g)
 
 # time series with
