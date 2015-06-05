@@ -32,17 +32,20 @@ times$total_round <- round(times$total_t)
 # Baseline: hours
 g <- ggplot(times, aes(x = date, y = total_t)) +
   geom_line() +
-  scale_x_date(breaks = date_breaks("1 week"), labels = date_format("%d %b")) +
-  xlab("") + ylab("Hours spent sleeping")
+  scale_x_date(breaks = date_breaks("1 week"),
+    labels = date_format("%d %b '%y")) +
+  xlab("") + ylab("Hours spent sleeping") +
+  theme(axis.text.x = element_text(angle=45, vjust=0.5))
 print(g)
-
-
-# last_plot() + geom_smooth(aes(group = factor(month), colour = (a > 0)), method = lm, se = F)
 
 # Overall Trend
 g <- ggplot(times, aes(x = date, y = total_t)) +
   geom_line() +
-  geom_smooth(method = lm, se = F, colour = "green")
+  geom_smooth(method = lm, se = F, colour = "red") +
+  scale_x_date(breaks = date_breaks("1 week"),
+    labels = date_format("%d %b '%y")) +
+  xlab("") + ylab("Hours spent sleeping") +
+  theme(axis.text.x = element_text(angle=45, vjust=0.5))
 print(g)
 
 # Monthly Trend
@@ -50,9 +53,13 @@ print(g)
 # https://learnr.wordpress.com/2009/07/12/ggplot2-decadal-trend-rates-in-global-temperature/
 g <- ggplot(times, aes(x = date, y = total_t)) +
   geom_line() +
-  geom_smooth(method = lm, se = F, colour = "green") +
-  geom_smooth(aes(group = factor(my), colour = times$my), method = lm, se = F) +
-  theme(legend.position = "none")
+  geom_smooth(method = lm, se = F, colour = "red") +
+  geom_smooth(aes(group = my, colour = my), method = lm, se = F) +
+  scale_x_date(breaks = date_breaks("1 week"),
+    labels = date_format("%d %b '%y")) +
+  xlab("") + ylab("Hours spent sleeping") +
+  theme(legend.position = "none",
+    axis.text.x = element_text(angle=45, vjust=0.5))
 print(g)
 
 # # Daily Trend
