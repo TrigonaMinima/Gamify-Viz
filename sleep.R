@@ -10,7 +10,7 @@ library(reshape2)
 times <- read.csv("Data/sleep_times.csv", stringsAsFactors=FALSE)
 
 # Date to R's "date" format.
-times$date <- as.Date(times$date, "%d-%m-%Y")
+times$date <- as.Date(times$date, "%d-%m-%Y", , origin="1970-01-01")
 
 # Adding day corresponding to the date.
 times$day <- substr(x=weekdays(times$date), start=1, stop=3)
@@ -21,8 +21,13 @@ times$my <- paste(format(times$date, "%b"),
   sep = "")
 
 # Total time in hours (2:30 hrs -> 2.5 hrs)
-times$total_t <- as.integer(substr(x=times$total, start=1, stop=2)) +
-  (as.integer(substr(x=times$total, start=4, stop=5)) / 60)
+times$total_t <- as.integer(substr(x = times$total, start = 1, stop = 2)) +
+  (as.integer(substr(x = times$total, start = 4, stop = 5)) / 60)
+
+# Average time in hours (2:30 hrs -> 2.5 hrs)
+times$avg_t <- as.integer(substr(x = times$avg, start = 1, stop = 2)) +
+  (as.integer(substr(x = times$avg, start = 4, stop = 5)) / 60) +
+  (as.integer(substr(x = times$avg, start = 7, stop = 8)) / 3600)
 
 # Rounded total time.
 times$total_round <- round(times$total_t)
@@ -43,7 +48,8 @@ times$te5 <- strptime(times$te5, format = "%I:%M %p")
 times$colour <- ifelse((seq(1:length(times$date)) %% 2) ==  1, "red", "grey30")
 
 # Each line bar represents the amount of time I slept.
-# g <- ggplot(times, aes(x = as.POSIXct(date), colour = colour)) +   [With colours]
+# with colours -
+# g <- ggplot(times, aes(x = as.POSIXct(date), colour = colour))
 g <- ggplot(times, aes(x = as.POSIXct(date))) +
   geom_segment(aes(y = ts1,
     x = as.POSIXct(date),
@@ -82,11 +88,11 @@ g <- ggplot(times, aes(x = as.POSIXct(date))) +
     legend.position = "none")
 print(g)
 
+# Some variables for the next plot
 avg <- mean(times$total_t)
-yu <- avg + 0.3
-yl <- avg - 0.3
+yu <- avg + 0.6
+yl <- avg - 0.6
 label <- paste(round(avg,2), "Hours")
-
 
 # Time series plot.
 # Baseline: hours
@@ -114,13 +120,12 @@ g <- ggplot(times, aes(x = date, y = total_t)) +
     colour = "grey60") +
   geom_text(aes(label = "24 Hours",
     x = date[1] - 9,
-    y = 24.3,
+    y = 24.6,
     size = 5),
     colour = "grey60") +
   theme(axis.text.x = element_text(angle=45, vjust=0.5),
     legend.position = "none")
 print(g)
-
 
 # Overall Trend
 g <- ggplot(times, aes(x = date, y = total_t)) +
@@ -135,50 +140,36 @@ g <- ggplot(times, aes(x = date, y = total_t)) +
     legend.position = "none")
 print(g)
 
-
 # Monthly Trend
 # Can be made better
 # https://learnr.wordpress.com/2009/07/12/ggplot2-decadal-trend-rates-in-global-temperature/
+# Display rates
+
+vlines <- aggregate(times$date, by = list(times$my), max)$x
+
 g <- ggplot(times, aes(x = date, y = total_t)) +
   geom_line(colour = "grey70") +
   geom_point(colour = "grey50", size = 0.7) +
-  geom_smooth(method = lm, se = F, colour = "grey55") +
+  geom_smooth(method = lm, se = F, colour = "green") +
   geom_smooth(aes(group = my, colour = my), method = lm, se = F) +
+  geom_vline(x = as.numeric(sort(vlines, decreasing = T)[-1]),
+    linetype = 3,
+    colour = "grey50") +
   theme_bw() +
-
-  geom_vline() +
-
-
   scale_x_date(breaks = date_breaks("1 week"),
     labels = date_format("%d %b '%y")) +
   xlab("") + ylab("Hours spent sleeping") +
+  scale_colour_hue(c = 70, l = 30) +
   theme(axis.text.x = element_text(angle=45, vjust=0.5),
     legend.position = "none")
 print(g)
 
-
-# # Daily Trend
-# Make daily data nad use it
+# Monthly Trend by day
 # g <- ggplot(times, aes(x = date, y = total_t)) +
 #   geom_line() +
 #   geom_smooth(method = lm, se = F, colour = "green") +
 #   geom_smooth(aes(group = factor(my), colour = times$my), method = lm, se = F)
 # print(g)
-
-# Monthly Trend by day
-g <- ggplot(times, aes(x = date, y = total_t)) +
-  geom_line() +
-  geom_smooth(method = lm, se = F, colour = "green") +
-  geom_smooth(aes(group = factor(my), colour = times$my), method = lm, se = F) +
-  facet_wrap(~day, scales = "free")
-print(g)
-
-
-# Cumulative time series
-g <- ggplot(times, aes(x = date)) +
-  geom_line(aes(y = cumsum(times$total_t))) +
-  geom_line(aes(y = cumsum(rep(rep(24, length(times$date))))))
-print(g)
 
 # time series with
 # g <- ggplot(times, aes(x = times$total_t, y = 24)) +
@@ -209,7 +200,20 @@ print(g)
 # print(g1)
 
 
+# bars
+g <- ggplot(times, aes(x = date, y = total_t)) +
+  geom_bar(stat = "identity")
+print(g)
 
+
+# bars
+g <- ggplot(times, aes(x = date, y = avg_t)) +
+  geom_bar(stat = "identity")
+print(g)
+
+g <- ggplot(times, aes(x = date, y = avg_t)) +
+  geom_line(stat = "identity")
+print(g)
 
 
 # Histogram.
@@ -411,6 +415,19 @@ print(g)
 
 
 # print(g)
+
+
+
+
+# Cumulative time series
+# g <- ggplot(times, aes(x = date)) +
+#   geom_line(aes(y = cumsum(times$total_t))) +
+#   geom_line(aes(y = cumsum(rep(rep(24, length(times$date))))))
+# print(g)
+
+
+
+
 
 
 # % change per day.
