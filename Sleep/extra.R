@@ -60,12 +60,3 @@ g <- ggplot(times, aes(total_t)) +
     bw = 0.2) +
   geom_rug()
 print(g)
-
-
-# Faceted scatterplot plot with all points in the background of each plot.
-g <- ggplot(times, aes(date, total_t)) +
-  geom_point(data = transform(times, day = NULL), colour = "grey92") +
-  geom_point() +
-  facet_grid(~day) +
-  theme_bw()
-print(g)

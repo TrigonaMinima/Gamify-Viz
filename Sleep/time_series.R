@@ -18,10 +18,11 @@ g <- ggplot(times, aes(x = date, y = total_t)) +
     position = "identity",
     stat = "hline",
     colour = "grey50") +
-  theme_bw() +
-  scale_x_date(breaks = date_breaks("1 week"),
-    labels = date_format("%d %b '%y")) +
-  xlab("") + ylab("Hours spent sleeping") +
+  # scale_x_date(breaks = date_breaks("1 week"),
+  #   labels = date_format("%d %b '%y")) +
+  scale_x_date(labels = date_format("%b '%y")) +
+  xlab("") +
+  ylab("Hours spent sleeping") +
   geom_text(aes(label = "Current Average",
     x = date[1] - 8,
     y = yu,
@@ -37,8 +38,10 @@ g <- ggplot(times, aes(x = date, y = total_t)) +
     y = 24.6,
     size = 5),
     colour = "grey60") +
+  ggtitle("Sleeping pattern") +
   theme(axis.text.x = element_text(angle=45, vjust=0.5),
-    legend.position = "none")
+    legend.position = "none") +
+  theme_bw()
 print(g)
 
 
@@ -53,3 +56,27 @@ print(g)
 # g <- ggplot(times, aes(x = times$total_t, y = 24)) +
 #   geom_point()
 # print(g)
+
+
+# Average hours spent sleeping per day
+g <- ggplot(times, aes(x = date, y = avg_t)) +
+  geom_line(colour = "grey70") +
+  geom_point(colour = "grey50", size = 0.9) +
+  xlab("") +
+  ylab("Average hours") +
+  scale_x_date(labels = date_format("%b '%y")) +
+  ggtitle("Average hours spent sleeping per day") +
+  theme(plot.title = element_text(lineheight=.8, face="bold")) +
+  theme_bw()
+print(g)
+
+
+# Upper plot without line
+g <- ggplot(times, aes(x = date, y = avg_t)) +
+  geom_point() +
+  xlab("") +
+  ylab("Average hours spent sleeping") +
+  scale_x_date(labels = date_format("%b '%y")) +
+  ggtitle("Average hours spent sleeping per day") +
+  theme_bw()
+print(g)
