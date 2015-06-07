@@ -39,6 +39,7 @@ g <- ggplot(times, aes(x = date, y = total_t)) +
     legend.position = "none")
 print(g)
 
+
 # Monthly Trend
 # g <- ggplot(times, aes(x = date, y = total_t)) +
 #   geom_line() +

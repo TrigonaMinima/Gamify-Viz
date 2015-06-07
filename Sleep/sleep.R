@@ -37,73 +37,6 @@ g
 
 
 
-
-# Kernel Density Plot
-g <- ggplot(times, aes(total_t)) +
-  stat_density(geom = "path", kernel = "rect", position = "identity", bw = 0.2) +
-  geom_rug()
-print(g)
-
-# Scatter Plot
-g <- ggplot(times) + geom_point(aes(total_t, day), shape = 1)
-print(g)
-
-# Faceted scatterplot plot with all points in the background of each plot.
-# g <- ggplot(times, aes(date, total_t)) +
-#   geom_point(data = transform(times, day = NULL), colour = "grey92") +
-#   geom_point() +
-#   facet_grid(~day) +
-#   theme_bw()
-# print(g)
-
-# Scatter Plot
-g <- ggplot(times, aes(x = date, y = total_t, colour = my)) +
-  geom_point(size = 2)
-  # theme(legend.position = "none") +
-  # scale_colour_brewer(palette = "Set1") +
-  # theme(panel.background = element_rect(colour = "grey")) +
-  # theme(panel.grid.minor = element_line(colour = NA)) +
-  # theme(panel.grid.major = element_line(colour = NA))
-print(g)
-
-# Point with jitter
-g <- ggplot(times, aes(factor(day), total_t)) +
-  geom_point(position = position_jitter(width = 0.05), alpha = 0.6, shape = 1) +
-  theme_bw() +
-  xlab("Magnitude (Richter)") +
-  ylab("Depth (km)")
-print(g)
-
-# Box Plot
-# g <- ggplot(times, aes(factor(day), total_t)) +
-#   geom_boxplot() + coord_flip() + ylab("Average time spent sleeping")
-# print(g)
-
-# Ribbon Plot
-# g <- ggplot(times, aes(total_t)) +
-#   geom_ribbon(aes(ymax = ..density.., ymin = -..density..), stat = "density") +
-#   # facet_grid(day ~ ., as.table = F, scales = "free_y") +
-#   labs(x = "Time spent sleeping", y = "Days")
-# print(g)
-
-# Loess Analysis
-g <- ggplot(times, aes(date, total_t)) +
-  geom_point() +
-  geom_smooth(method = "loess", size = 1.5) +
-  theme_bw()
-print(g)
-
-# Loess Analysis
-g <- ggplot(times, aes(date, total_t)) +
-  geom_point() +
-  geom_smooth(method = "loess", se = F) +
-  geom_rug() +
-  facet_grid(~day) +
-  xlab("Coursework score") +
-  ylab("Written exam score")
-print(g)
-
-
 # A ggplot trick to plot different plot types in facets
 
 # g <- ggplot(times, aes(x = date, y = total_t)) +
@@ -112,37 +45,6 @@ print(g)
 # g2 <- g1 + geom_linerange(my ~ .)
 # print(g2)
 
-
-# Panel Chart
-g <- ggplot(times, aes(x = date, y = total_t)) +
-  geom_point() +
-  geom_line() +
-  geom_smooth(method = "lm", se = FALSE, fullrange = T) +
-  facet_wrap(~day, ncol = 2) +
-  labs(x = "Date", y = "Total Time") +
-  theme_bw() +
-  facet_wrap(~day, ncol = 2, scales = "free") +
-  coord_equal()
-print(g)
-
-# Dont know wtf this is.
-# https://learnr.wordpress.com/2009/08/10/ggplot2-version-of-figures-in-lattice-multivariate-data-visualization-with-r-part-9/
-# g <- ggplot(times, aes(x = day, y = date, fill = total_t)) +
-#   geom_tile() +
-#   theme(axis.text.x = element_text(angle = 90, hjust = 1, colour = "grey50")) +
-#   theme(aspect.ratio = 50 / 5)
-# print(g)
-
-
-# Area under the curve or between 2 lines
-g <- ggplot(times, aes(x = date, y = total_t, ymin = 0, ymax = total_t)) +
-  geom_ribbon(aes(colour = my))
-print(g)
-
-# Area under the curve or between 2 lines
-g <- ggplot(times, aes(x = date, y = total_t, ymin = 0, ymax = total_t)) +
-  geom_ribbon()
-print(g)
 
 
 
@@ -208,6 +110,8 @@ print(g)
 
 
 # % change per day.
+
+# (24-total_t)*100/24 per day
 
 # plot of total hours spent sleeping during a month per the total number of hours in that month.
 
