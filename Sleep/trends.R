@@ -12,6 +12,7 @@ g1 <- ggplot(times, aes(x = date, y = total_t)) +
   # scale_x_date(breaks = date_breaks("1 week"),
   #   labels = date_format("%d %b '%y")) +
   xlab("") + ylab("Hours spent sleeping") +
+  ggtitle("Overall linear trend") +
   theme(legend.position = "none")
   # theme(axis.text.x = element_text(angle=45, vjust=0.5),
   #   legend.position = "none")
@@ -38,6 +39,7 @@ g <- ggplot(times, aes(x = date, y = total_t)) +
   #   labels = date_format("%d %b '%y")) +
   xlab("") + ylab("Hours spent sleeping") +
   scale_colour_hue(c = 70, l = 30) +
+  ggtitle("Overall linear trend overlapped with monthly linear trend") +
   theme(legend.position = "none",
     panel.grid.major.x = element_line(colour = "grey50", linetype = 1))
   # theme(axis.text.x = element_text(angle=45, vjust=0.5),
@@ -53,6 +55,7 @@ g <- ggplot(times, aes(x = date, y = total_t)) +
   scale_x_date(breaks = date_breaks("1 week"),
     labels = date_format("%d %b '%y")) +
   xlab("") + ylab("Hours spent sleeping") +
+  ggtitle("Overall loess trend") +
   theme(axis.text.x = element_text(angle=45, vjust=0.5),
     legend.position = "none") +
   theme_bw()
@@ -71,6 +74,7 @@ g <- ggplot(times, aes(x = date, y = total_t)) +
   #   labels = date_format("%d %b '%y")) +
   xlab("") + ylab("Hours spent sleeping") +
   scale_colour_hue(c = 70, l = 30) +
+  ggtitle("Overall loess trend overlapped with monthly linear trend") +
   theme(legend.position = "none",
     panel.grid.major.x = element_line(colour = "grey50", linetype = 1))
   # theme(axis.text.x = element_text(angle=45, vjust=0.5),
