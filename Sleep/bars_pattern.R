@@ -37,10 +37,13 @@ g <- ggplot(times, aes(x = as.POSIXct(date))) +
   scale_y_datetime(breaks = ("2 hour"),
     # minor_breaks = ("30 min"),
     labels = date_format("%H:%M")) +
-  scale_x_datetime(breaks = date_breaks("1 week"),
-    labels = date_format("%d %b '%y")) +
+  # scale_x_datetime(breaks = date_breaks("1 week"),
+  #   labels = date_format("%d %b '%y")) +
+  scale_x_datetime(labels = date_format("%b '%y")) +
   xlab("") +
   ylab("") +
-  theme(axis.text.x = element_text(angle=45, vjust=0.5),
-    legend.position = "none")
+  ggtitle("Amount of sleep I had on each day") +
+  theme(legend.position = "none")
+  # theme(axis.text.x = element_text(angle=45, vjust=0.5),
+  #   legend.position = "none")
 print(g)
