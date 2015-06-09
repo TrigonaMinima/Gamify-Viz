@@ -141,6 +141,8 @@ g
 # Change the order of legend labels
 # https://learnr.wordpress.com/2010/03/23/ggplot2-changing-the-default-order-of-legend-labels-and-stacking-of-data/
 
+# Find a relation between day and total_t (avg_t)
+
 # Generate a fuckin' pdf
 # pdf("population_growth.pdf", paper = "a4")
 # d_ply(df, .(country), function(x) plot(x$year, x$value, type = "l", main = unique(x$country)))

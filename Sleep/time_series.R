@@ -38,10 +38,11 @@ g <- ggplot(times, aes(x = date, y = total_t)) +
     y = 24.6,
     size = 5),
     colour = "grey60") +
+  theme_bw() +
   ggtitle("Sleeping pattern") +
-  theme(axis.text.x = element_text(angle=45, vjust=0.5),
-    legend.position = "none") +
-  theme_bw()
+  theme(legend.position = "none")
+  # theme(axis.text.x = element_text(angle=45, vjust=0.5),
+  #   legend.position = "none")
 print(g)
 
 
@@ -66,7 +67,7 @@ g <- ggplot(times, aes(x = date, y = avg_t)) +
   ylab("Average hours") +
   scale_x_date(labels = date_format("%b '%y")) +
   ggtitle("Average hours spent sleeping per day") +
-  theme(plot.title = element_text(lineheight=.8, face="bold")) +
+  theme(plot.title = element_text(lineheight = .8, face = "bold")) +
   theme_bw()
 print(g)
 
