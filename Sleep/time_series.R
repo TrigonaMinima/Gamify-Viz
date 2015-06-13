@@ -1,6 +1,7 @@
 # Loads libraries and data
 source("load.R")
 
+
 # Some variables plot
 avg <- mean(times$total_t)
 yu <- avg + 0.6
