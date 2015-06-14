@@ -117,9 +117,6 @@ g
 
 # plot of total hours spent sleeping during a day per 24 hrs.
 
-# heatmap of day (sun, mon, tue, wed, thu, fri, sat) vs no of hours per day (0-1, 1-2, 2-3, ..., 14-15).
-# https://learnr.wordpress.com/2010/01/26/ggplot2-quick-heatmap-plotting/
-
 # daily average change and hline at the average I want
 
 # stacked bars (and overlapping bars - https://learnr.wordpress.com/2009/04/02/ggplot2-marimekko-replacement-overlapping-bars/)

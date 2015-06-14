@@ -73,6 +73,20 @@ g <- ggplot(times, aes(x = date, y = avg_t)) +
 print(g)
 
 
+# Average hours spent sleeping per day with a hline at 7 hours.
+g <- ggplot(times, aes(x = date, y = avg_t)) +
+  geom_line(colour = "grey70") +
+  geom_point(colour = "grey50", size = 0.9) +
+  geom_hline(y = 7, color = "grey70") +
+  xlab("") +
+  ylab("Average hours") +
+  scale_x_date(labels = date_format("%b '%y")) +
+  ggtitle("Average hours spent sleeping per day") +
+  theme(plot.title = element_text(lineheight = .8, face = "bold")) +
+  theme_bw()
+print(g)
+
+
 # Upper plot without line
 g <- ggplot(times, aes(x = date, y = avg_t)) +
   geom_point() +
