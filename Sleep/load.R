@@ -5,6 +5,7 @@
 library(ggplot2)
 library(scales)
 library(reshape2)
+library(plyr)
 
 # Load data.
 times <- read.csv("Data/sleep_times.csv", stringsAsFactors=FALSE)
