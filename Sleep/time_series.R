@@ -89,3 +89,52 @@ g <- ggplot(times, aes(x = date, y = avg_t)) +
   ggtitle("Average hours spent sleeping per day") +
   theme_bw()
 print(g)
+
+
+# Panel plot with time series and average hours spent sleeping.
+# followed this
+# https://learnr.wordpress.com/2009/05/01/ggplot2-dont-try-this-with-excel-revised/
+
+dummy <- data.frame(date = rep(times$date, 2),
+  time = c(times$total_t, times$avg_t),
+  id = c(rep("Time Series Plot", length(times$date)),
+    rep("Average Hours Slept", length(times$date))))
+
+
+p <- ggplot(dummy, aes(x = date, y = time)) +
+  # ylim(0, 20) +
+  facet_grid(id ~ .) +
+  xlab(NULL) +
+  ylab(NULL) +
+  scale_x_date(labels = date_format("%b '%y")) +
+  theme_bw() +
+  theme(legend.position = "none",
+    panel.margin = unit(0, "lines"),
+    panel.grid.major = element_blank()) +
+  geom_blank()
+
+
+df1 <- data.frame(subset(times, select = c("date", "avg_t")),
+  id  = levels(dummy$id)[1])
+colnames(df1)[colnames(df1) == "avg_t"] <- "time"
+
+
+# Average hours spent sleeping per day with a hline at 7 hours.
+g1 <- p + geom_line(data = df1, colour = "grey70") +
+  geom_point(data = df1, colour = "grey50", size = 0.9) +
+  geom_hline(y = 7, color = "grey70")
+print(g1)
+
+
+df2 <- data.frame(subset(times, select = c("date", "total_t")),
+  id  = levels(dummy$id)[2])
+colnames(df2)[colnames(df2) == "total_t"] <- "time"
+
+
+# time series
+g2 <- g1 + geom_line(data = df2, colour = "grey70") +
+  geom_point(data = df2, colour = "grey50", size = 0.7) +
+  geom_hline(y = avg,
+    position = "identity",
+    stat = "hline",
+    colour = "grey50")
