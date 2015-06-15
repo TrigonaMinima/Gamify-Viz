@@ -6,6 +6,7 @@ library(ggplot2)
 library(scales)
 library(reshape2)
 library(plyr)
+library(grid)
 
 # Load data.
 times <- read.csv("Data/sleep_times.csv", stringsAsFactors=FALSE)
@@ -49,3 +50,12 @@ times$te5 <- strptime(times$te5, format = "%I:%M %p")
 
 # Colour vector for the following graph
 times$colour <- ifelse((seq(1:length(times$date)) %% 2) ==  1, "red", "grey30")
+
+
+# time series plot
+
+# Some variables plot
+avg <- mean(times$total_t)
+yu <- avg + 0.6
+yl <- avg - 0.6
+label <- paste(round(avg,2), "Hours")

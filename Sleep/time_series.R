@@ -2,13 +2,6 @@
 source("load.R")
 
 
-# Some variables plot
-avg <- mean(times$total_t)
-yu <- avg + 0.6
-yl <- avg - 0.6
-label <- paste(round(avg,2), "Hours")
-
-
 # Time series plot.
 # Baseline: hours
 g <- ggplot(times, aes(x = date, y = total_t)) +
